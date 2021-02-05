@@ -1,0 +1,18 @@
+<template>
+    <div class="slds-grid slds-gutters" style="background-color: #f1f1f1;"><!-- container -->
+        <div class="slds-col slds-size_1-of-1"><h1>This is your cart:</h1></div>
+        <div class="slds-col slds-size_1-of-1">
+            <div class="slds-grid slds-wrap"><!-- all the products of the cart will be here -->
+                <template for:each={products} for:item="product">
+                    <div class="slds-col slds-size_1-of-3 product" key={product.Id}><!-- start of a product -->
+                        <c-product-in-cart
+                                name={product.Name}
+                                description={product.Description__c}
+                                product-id={product.Id}>
+                        </c-product-in-cart>
+                    </div><!-- end of a product -->
+                </template>
+            </div><!-- end of the cart products -->
+        </div>
+    </div><!-- end of container -->
+</template>
