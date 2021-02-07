@@ -1,0 +1,76 @@
+<template>
+    <div class="slds-m-top_medium slds-m-bottom_x-large">
+        <!-- productName -->
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-input
+                    type="text"
+                    label="Product Name"
+                    placeholder="type here..."
+                    maxlength="80" required>
+            </lightning-input>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            <!-- product type -->
+            <lightning-combobox
+                    name="productType"
+                    label="Product Type"
+                    value=""
+                    placeholder="Select Type"
+                    options={typeOptions}
+                    required>
+            </lightning-combobox>
+            <!-- End of product type -->
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            <!-- product family -->
+            <lightning-combobox
+                    name="productFamily"
+                    label="Product Family"
+                    value=""
+                    placeholder="Select Family"
+                    options={familyOptions}
+                    required>
+            </lightning-combobox>
+            <!-- End of product family -->
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-input
+                    type="number"
+                    name="Price"
+                    label="Price"
+                    placeholder="type here..."
+                    step="0.01"
+                    required>
+            </lightning-input>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-textarea
+                    name="input7"
+                    value={productDescription}
+                    placeholder="type your description here..."
+                    label="Product description" maxlength="255"
+                    message-when-too-long="A maximum of 255 characters are allowed."
+                    message-when-value-missing="An empty description cannot be saved."
+                    required>
+            </lightning-textarea>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            <lightning-input
+                    type="url"
+                    label="Image URL"
+                    name="image_url"
+                    placeholder="Enter valid URL here..."
+                    required>
+            </lightning-input>
+        </div>
+        <div class="slds-p-around_medium lgc-bg">
+            <!-- Submit (create a product) button -->
+            <lightning-button
+                    label="Create"
+                    title="Create a product"
+                    onclick={handleCreateProduct}
+                    class="slds-m-left_x-small">
+            </lightning-button>
+        </div>
+    </div>
+</template>

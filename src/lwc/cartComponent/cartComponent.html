@@ -1,0 +1,30 @@
+<template>
+    <div class="slds-grid slds-gutters" style="background-color: #f1f1f1;"><!-- container -->
+        <div class="slds-col slds-size_1-of-3">
+            <template for:each={productsInTotal} for:item="product">
+                <p key={product.Id}>{product.Name}: {product.Price} x {product.Quantity} = {product.Cost}</p>
+            </template>
+            <hr />
+            <p>In total we have: {totalCost}</p>
+            <lightning-button
+                    label="Make an order"
+                    onclick={handleMakeOrder}>
+            </lightning-button>
+        </div>
+        <div class="slds-col slds-size_2-of-3">
+            <div class="slds-grid slds-wrap"><!-- all the products of the cart will be here -->
+                <template for:each={products} for:item="product">
+                    <div class="slds-col slds-size_1-of-3 product" key={product.Id}><!-- start of a product -->
+                        <c-product-in-cart
+                                onupdateamount={handleUpdateAmountEvent}
+                                name={product.Name}
+                                description={product.Description__c}
+                                product-id={product.Id}
+                                product-price={product.Price__c}>
+                        </c-product-in-cart>
+                    </div><!-- end of a product -->
+                </template>
+            </div><!-- end of the cart products -->
+        </div>
+    </div><!-- end of container -->
+</template>

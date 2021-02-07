@@ -1,0 +1,12 @@
+div.product {
+    background-color: white;
+    border: 2px solid black;
+    margin: 10px;
+    margin-left: 0;
+    padding: 20px;
+    padding-right: 0;
+}
+
+div.product h2 {
+    color: tomato;
+}
