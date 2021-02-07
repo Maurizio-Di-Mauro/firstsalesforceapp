@@ -28,48 +28,6 @@ export default class GrandParentWithHeader extends LightningElement {
                 this.error = error;
             });
         //end of loading the user
-
-        //when the component is connected, load the picklist values
-        //for createProductComponent and productFilter
-
-        //I tried to "centralize" the loading of typeOptions and familyOptions
-        //But it wasn't working properly
-        //So I had to violate the general rule of not repeating your code
-//        let pickListOptions;
-//        let inBetweenTypeOptions = [];
-//        let inBetweenFamilyOptions = [];
-//        let i = 0;
-//
-//        getProductTypeOptions()
-//            .then(result => {
-//                pickListOptions = [].concat(result);
-//                for (i = 0; i < pickListOptions.length; i++){
-//                    inBetweenTypeOptions.push( { label: pickListOptions[i], value: pickListOptions[i] } );
-//                }//end of for loop
-//                this.typeOptions = [].concat(inBetweenTypeOptions);
-//                console.log(this.typeOptions);
-//            })
-//            .catch(error => {
-//                console.log("Instead of type we got an error")
-//                console.log(error);
-//            });
-//        // end of getting type options
-//        //getting family options
-//        getProductFamilyOptions()
-//            .then(result => {
-//                pickListOptions = [].concat(result);
-//                for (i = 0; i < pickListOptions.length; i++){
-//                    inBetweenFamilyOptions.push( { label: pickListOptions[i], value: pickListOptions[i] } );
-//                }//end of for loop
-//                this.familyOptions = [].concat(inBetweenFamilyOptions);
-//                console.log(this.familyOptions);
-//            })
-//            .catch(error => {
-//                console.log("Instead of family we got an error")
-//                console.log(error);
-//            });
-//        //end of getting family options
-//        console.log("We have ended connection stuff in grandparent")
     }
 
     moveToCreateProduct(event) {

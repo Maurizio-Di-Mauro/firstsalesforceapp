@@ -10,7 +10,7 @@ public with sharing class CustomProductManager {
 			String productDescription,
 			String productImage) {
 		System.debug('We got data: ' + productName + productImage + productPrice);
-		Product__c new_product = new Product__c ( //creating new product
+		Product__c newProduct = new Product__c ( //creating new product
 				Name = productName,
 				Type__c = productType,
 				Family__c = productFamily,
@@ -20,7 +20,7 @@ public with sharing class CustomProductManager {
 		try {
 			// try to insert the new record into our database
 			System.debug('Here we are inserting!');
-			insert new_product; //inserting this new product to the database
+			insert newProduct; //inserting this new product to the database
 		} catch (DmlException e) {
 			// catching any exception related to database update
 			System.debug('An unexpected error has occurred: ' + e.getMessage());
@@ -46,7 +46,6 @@ public with sharing class CustomProductManager {
 			System.debug('An unexpected error has occurred: ' + e.getMessage());
 			return pickListValuesList; //this supposedly will be undefined
 		}
-//		return pickListValuesList; //return the values
 	}//end of getProductTypeOptions()
 
 	//return picklist values for product family
@@ -66,41 +65,8 @@ public with sharing class CustomProductManager {
 			System.debug('An unexpected error has occurred: ' + e.getMessage());
 			return pickListValuesList; //this supposedly will be undefined
 		}
-//		return pickListValuesList; //return the values
 	}//end of getProductFamilyOptions()
 
-//	@AuraEnabled(cacheable=true)
-//	public static List<String> testingGet(){
-//		List<String> testReturn = new List<String>();
-//		Schema.DescribeFieldResult fieldResult = Product__c.Family__c.getDescribe();
-//		List<Schema.PicklistEntry> ple = fieldResult.getPicklistValues();
-//		for( Schema.PicklistEntry pickListVal : ple){
-//			testReturn.add(pickListVal.getLabel());
-//		}
-//		System.debug('Here is my testReturn: ' + testReturn);
-//		return testReturn;
-//	}
-
-
-//	//get all the records from Product__c
-//	public static List<Product__c> getProductsOldVersion(String searchKey) {
-//		//this will return a list of products, based on a search query
-//		//every product will return:
-//		//product name, product price, product description, product type, product family and product Id
-//		if (String.isBlank(searchKey)) {
-//			//if the searchBar was blank
-//			return [SELECT Id, Name, Description__c, Family__c, Type__c, Price__c FROM Product__c LIMIT 100 ];
-//		} else {
-//			//if we have a searchKey, look for a name
-//			String key = '%' + searchKey + '%';
-//			return [
-//					SELECT Id, Name, Description__c, Family__c, Type__c, Price__c
-//					FROM Product__c
-//					WHERE Name LIKE :key
-//					LIMIT 100
-//			];
-//		}
-//	}
 
 	@AuraEnabled(cacheable=true)
 	public static List<Product__c> getProducts(String searchKey, String typeValue, String familyValue) {

@@ -1,7 +1,9 @@
 import { LightningElement, api, track } from 'lwc';
 import getProductsForCart from '@salesforce/apex/CustomProductManager.getProductsForCart';
+import createOrder from '@salesforce/apex/CustomOrderManager.createOrder';
 
 export default class CartComponent extends LightningElement {
+    @api userName = ''; //here we will store buyer's (user's) name
     @api productsIdInCart = []; //these are ids from defaultParent
     @api products; //here are stored our products
     @api productsInTotal = []; //here stored products with their prices and quantities
@@ -17,7 +19,6 @@ export default class CartComponent extends LightningElement {
                 this.totalCost += this.productsInTotal[i].Cost;
             }
         }
-        console.log(this.totalCost);
     }
 
     manageProductsInTotal(products){
@@ -30,7 +31,6 @@ export default class CartComponent extends LightningElement {
                 Quantity: 1,
                 Cost: products[i].Price__c //Quantity * Price, where Quantity = 1
             }
-            console.log("This is our product: " + product);
             this.productsInTotal.push(product);
         }
         this.recalculateTotalCost();//recalculating totalCost
@@ -40,8 +40,6 @@ export default class CartComponent extends LightningElement {
         getProductsForCart({ ids: this.productsIdInCart })
             .then(result => {
                 this.products = result;
-                console.log("Our cart: " + this.products);
-                console.log(this.products);
                 this.manageProductsInTotal(this.products);
             })
             .catch(error => {
@@ -50,11 +48,10 @@ export default class CartComponent extends LightningElement {
     }
 
     handleUpdateAmountEvent(event) {
-        console.log("Here is our change: ");
-        console.log(event.detail.Id + " " + event.detail.Quantity);
         let positionOfTheProduct = 0;
-        let found = false; //this will help us to determine, whether we found the product in cart or not
-        console.log("Before the for loop");
+        //this will help us to determine, whether we found the product in cart or not
+        let found = false;
+
         for (let i = 0; i < this.productsInTotal.length; i++) {
             if (this.productsInTotal[i].Id == event.detail.Id) {
                 //when we find the product, break the loop with its position
@@ -67,18 +64,40 @@ export default class CartComponent extends LightningElement {
             this.productsInTotal[positionOfTheProduct].Quantity = event.detail.Quantity;
             this.productsInTotal[positionOfTheProduct].Cost = this.productsInTotal[positionOfTheProduct].Price * event.detail.Quantity;
             this.recalculateTotalCost(); //recalculating totalCost
-            console.log("New cost: " + this.productsInTotal[positionOfTheProduct].Cost);
         } else {
             //if we somehow didn't found the product, tell that
             //and also don't change anything else
             console.log("We didn't find the product");
         }
-        console.log("At the end");
     }
 
 
     handleMakeOrder(event) {
         //when user wants to make an order
-        console.log("We need to pay: " + this.totalCost);
+        //this should have name "handleCheckout" instead
+
+        //here we will store OrderItem__c objects
+        let orderItems = [];
+        let orderItem;
+
+        //in this for loop we will create an array of OrderItem__c objects
+        for (let i = 0; i < this.productsInTotal.length; i++) {
+            //first, create an object
+            orderItem = {
+                Name: this.productsInTotal[i].Name,
+                OrderId__c: '', //we keep it empty for now
+                Price__c: this.productsInTotal[i].Price,
+                ProductId__c: this.productsInTotal[i].Id,
+                Quantity__c: this.productsInTotal[i].Quantity
+            }
+            orderItems.push(orderItem);
+        }
+        //now we are ready to deploy orderItems into apex
+        createOrder({
+            orderItems: orderItems,
+            userName: this.userName,
+            accountId: null,
+            accountName: null
+        })
     }
 }

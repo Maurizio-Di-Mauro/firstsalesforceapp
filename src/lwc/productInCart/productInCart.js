@@ -27,7 +27,6 @@ export default class ProductInCart extends NavigationMixin(LightningElement) {
         } else {
             this.amount = parseInt(event.detail.value, 10);
         }
-        console.log("We have this amount of " + this.name + ": " + this.amount);
 
         const updateAmountEvent = new CustomEvent("updateamount", {
             detail: {Id: this.productId, Quantity: this.amount}
