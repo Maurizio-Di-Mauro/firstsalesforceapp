@@ -57,4 +57,11 @@ export default class GrandParentWithHeader extends LightningElement {
     handleUpdateCart(event) {
         this.productsInCart.push(event.detail);
     }
+
+    //when the user checkouts the cart, clear input for cart
+    handleCheckoutCartEvent(event) {
+        // if the user checkouts the cart,
+        // that means we don't need these products to be stored
+        this.productsInCart = [];
+    }
 }

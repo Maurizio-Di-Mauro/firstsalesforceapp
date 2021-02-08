@@ -99,5 +99,18 @@ export default class CartComponent extends LightningElement {
             accountId: null,
             accountName: null
         })
+
+        // tell the user, that order was inserted
+        alert("The order is inserted!");
+        //clear the cart by clearing all used variables
+        this.products = [];
+        this.productsInTotal = [];
+        this.productsIdInCart = [];
+        this.totalCost = 0;
+
+        // now create an event to tell the grandparent to clear its variables
+        const checkoutCartEvent = new CustomEvent("checkoutcart");
+        // Dispatch the event
+        this.dispatchEvent(checkoutCartEvent);
     }
 }

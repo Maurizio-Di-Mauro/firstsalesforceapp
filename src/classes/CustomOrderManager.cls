@@ -5,6 +5,13 @@ public with sharing class CustomOrderManager {
 	public static void createOrder(List<OrderItem__c> orderItems, String userName, ID accountId, String accountName) {
 		//this will create an Order__c object and insert it into the database
 
+		if (orderItems.size() < 1) {
+			//if there are no OrderItem__c objects
+			//stop the execution
+			System.debug('No orderItems in the order');
+			return;
+		}
+
 		if (accountId == null) {
 			//we will hardcode for now an AccountId and AccountName
 			accountId = '00109000008OZwTAAW';
@@ -28,6 +35,8 @@ public with sharing class CustomOrderManager {
 		}
 
 		//after we have uploaded the new order, we need to "populate" it with its order items
+		//this list will contain updated order items
+		List<OrderItem__c> finishedOrderItems = new List<OrderItem__c>();
 		for (OrderItem__c newOrderItem : orderItems) {
 			if (newOrderItem.Quantity__c < 1) {
 				//just in case something went wrong on front-end
@@ -35,13 +44,23 @@ public with sharing class CustomOrderManager {
 			}
 			//assign Order__c.Id to the order's OrderItem__c
 			newOrderItem.OrderId__c = newOrder.Id;
-			try {
-				insert newOrderItem;
-			} catch (DmlException e) {
-				System.debug('An unexpected error has occurred: ' + e.getMessage());
-			}
+
+			//adding changed OrderItem__c to the new list
+			finishedOrderItems.add(newOrderItem);
+		}
+		//after the loop we will insert all the OrderItems__c at once
+		try {
+			insert finishedOrderItems;
+		} catch (DmlException e) {
+			System.debug('An unexpected error has occurred: ' + e.getMessage());
 		}
 		//just to see the order
 		System.debug(newOrder);
+		//update newOrder, so CalculateOrderCostTrigger can kick in and do its stuff
+		try {
+			update newOrder;
+		} catch (DmlException e) {
+			System.debug('An unexpected error has occurred: ' + e.getMessage());
+		}
 	}
 }

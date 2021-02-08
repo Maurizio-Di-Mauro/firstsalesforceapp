@@ -60,6 +60,7 @@
     </template><!-- end of default child (parent) -->
     <template if:true={inCartMode}><!-- cart -->
         <c-cart-component
+            oncheckoutcart={handleCheckoutCartEvent}
             products-id-in-cart={productsInCart}
             user-name={user.Name}>
         </c-cart-component>
